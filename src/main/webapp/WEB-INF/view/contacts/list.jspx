@@ -1,18 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <div xmlns:jsp="http://java.sun.com/JSP/Page"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:joda="http://www.joda.org/joda/time/tags" 
-	xmlns:spring="http://www.springframework.org/tags"
-	version="2.0">
-	
-	<spring:message code="label_contact_list" var="labelContactList"/>
-	<spring:message code="label_contact_first_name" var="labelContactFirstName"/>
-	<spring:message code="label_contact_last_name" var="labelContactLastName"/>
-	<spring:message code="label_contact_birth_date" var="labelContactBirthDate"/>
-	
+	xmlns:joda="http://www.joda.org/joda/time/tags"
+	xmlns:spring="http://www.springframework.org/tags" version="2.0">
+
+	<spring:message code="label_contact_list" var="labelContactList" />
+	<spring:message code="label_contact_first_name"
+		var="labelContactFirstName" />
+	<spring:message code="label_contact_last_name"
+		var="labelContactLastName" />
+	<spring:message code="label_contact_birth_date"
+		var="labelContactBirthDate" />
+
+	<spring:url value="/contacts" var="showContactUrl" />
+
+
 	<jsp:directive.page contentType="text/html;charset=UTF-8" />
 	<jsp:output omit-xml-declaration="yes" />
-	
+
+	<!-- This is now in the Apache Tiles wrapper page ...
+ 	<head>
+		<spring:theme code="styleSheet" var="app_css" />
+		<spring:url value="/${app_css}" var="app_css_url" />
+		<link rel="stylesheet" type="text/css" media="screen" href="${app_css_url}" /> 
+	</head> -->
+
 	<h1>${labelContactList}</h1>
 	<c:if test="${not empty contacts}">
 		<table>
@@ -26,7 +38,8 @@
 			<tbody>
 				<c:forEach items="${contacts}" var="contact">
 					<tr>
-						<td>${contact.firstName}</td>
+						<td><a href="${showContactUrl}/${contact.id}">
+								${contact.firstName} </a></td>
 						<td>${contact.lastName}</td>
 						<td><joda:format value="${contact.birthDate}"
 								pattern="yyyy-MM-dd" /></td>

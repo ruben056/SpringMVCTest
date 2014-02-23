@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<beans xmlns="http://www.springframework.org/schema/beans" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:mvc="http://www.springframework.org/schema/mvc" 
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:p="http://www.springframework.org/schema/p"	
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
 	xsi:schemaLocation="
 		http://www.springframework.org/schema/mvc 
 		http://www.springframework.org/schema/mvc/spring-mvc.xsd
@@ -13,32 +11,61 @@
 		http://www.springframework.org/schema/context 
 		http://www.springframework.org/schema/context/spring-context.xsd">
 
-    
-    
-    <context:component-scan base-package="be.rd.controller"/>
+	<context:component-scan base-package="be.rd.controller" />
 
-	<mvc:resources location="/, classpath:META-INF/web-resources/" mapping="/resources/**"/>
-    <mvc:annotation-driven />
-    <mvc:default-servlet-handler/>
-    
-	<mvc:interceptors>
-		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" 
-		p:paramName="lang"/>	
-	</mvc:interceptors>
+	<mvc:resources location="/, classpath:META-INF/web-resources/"
+		mapping="/resources/**" />
+	<mvc:annotation-driven validator="validator"/>
+	<mvc:default-servlet-handler />
+
+	<bean id="validator"
+		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"
+		p:validationMessageSource-ref="messageSource"/>
 	
+	<mvc:interceptors>
+		<bean class="org.springframework.web.servlet.theme.ThemeChangeInterceptor" />
+		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"
+			p:paramName="lang" />
+	</mvc:interceptors>
+
+	<!-- THEMING -->
+	<bean
+		class="org.springframework.ui.context.support.ResourceBundleThemeSource"
+		id="themeSource" />
+	<bean class="org.springframework.web.servlet.theme.CookieThemeResolver"
+		id="themeResolver" p:cookieName="theme" p:defaultThemeName="standard" />
+
+	<!-- I18N -->
 	<!-- This will make sure you don't have to pass the locale with every request -->
 	<bean class="org.springframework.web.servlet.i18n.CookieLocaleResolver"
-		id="localeResolver" p:cookieName="locale"/>
-		
-	<bean class="org.springframework.context.support.ReloadableResourceBundleMessageSource"
-		id="messageSource" 
-		p:basenames="WEB-INF/i18n/messages, WEB-INF/i18n/application"
-		p:fallbackToSystemLocale="false"/>
+		id="localeResolver" p:cookieName="locale" />
+	<bean
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource"
+		id="messageSource" p:basenames="WEB-INF/i18n/messages, WEB-INF/i18n/application"
+		p:fallbackToSystemLocale="false" />
 
-	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-	        <!-- Example: a logical view name of 'showMessage' is mapped to '/WEB-INF/jsp/showMessage.jsp' -->
-	        <property name="prefix" value="/WEB-INF/view/"/>
-	        <property name="suffix" value=".jspx"/>
+	<!-- VIEW RESOLVING done in apache tiles -->
+	<!-- <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"> 
+		Example: a logical view name of 'showMessage' is mapped to '/WEB-INF/jsp/showMessage.jsp' 
+		<property name="prefix" value="/WEB-INF/view/"/> <property name="suffix" 
+		value=".jspx"/> </bean> -->
+
+	<!-- APACHE TILES -->
+	<bean class="org.springframework.web.servlet.view.UrlBasedViewResolver"
+		id="tilesViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.tiles2.TilesView" />
 	</bean>
-	
+
+	<bean class="org.springframework.web.servlet.view.tiles2.TilesConfigurer"
+		id="tilesConfigurer">
+		<property name="definitions">
+			<list>
+				<value>/WEB-INF/layouts/layouts.xml</value>
+				<!-- Scan views directory for Tiles configurations -->
+				<value>/WEB-INF/view/**/views.xml</value>
+			</list>
+		</property>
+	</bean>
+		
 </beans>
