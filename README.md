@@ -17,4 +17,3 @@ Integration with apache tiles
 WEB-INF/views => contains all components - building blocks - use to create a template/page
 WEB-INF/layouts => contains template definitions (jspx files) and a layout.xml storing all the page layout definitions
 
-
