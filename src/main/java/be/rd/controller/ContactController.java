@@ -17,6 +17,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -68,6 +69,7 @@ public class ContactController {
 	}
 
 	// updating contact
+	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(value = "/{id}", params = "form", method = RequestMethod.GET)
 	public String editForm(@PathVariable Long id, Model uiModel) {
 
@@ -79,6 +81,7 @@ public class ContactController {
 		return "contacts/edit";
 	}
 
+	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(value = "/{id}", params = "form", method = RequestMethod.POST)
 	public String update(@Valid Contact contact, BindingResult bindingResult,
 			Model uiModel, HttpServletRequest httpSR, RedirectAttributes ra,
@@ -99,10 +102,13 @@ public class ContactController {
 		// Process upload file
 		if (file != null) {
 			
-			if(file.getSize() == 0){
+			if(file.getSize() == 0)
+			{
 				// do not delete the picture if not changed...
-				contact.setPhoto(downloadPhoto(contact.getId()));
-			}else{
+				contact.setPhoto(contactService.findById(contact.getId()).getPhoto());
+			}
+			else
+			{
 				log.info("File name: " + file.getName());
 				log.info("File size: " + file.getSize());
 				log.info("File content type: " + file.getContentType());
@@ -133,6 +139,7 @@ public class ContactController {
 	}
 
 	// creating contact
+	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(params = "form", method = RequestMethod.GET)
 	public String editForm(Model uiModel) {
 
@@ -143,6 +150,7 @@ public class ContactController {
 		return "contacts/edit";
 	}
 
+	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(params = "form", method = RequestMethod.POST)
 	public String create(@Valid Contact contact, BindingResult bindingResult,
 			Model uiModel, HttpServletRequest httpSR, RedirectAttributes ra,
@@ -248,4 +256,6 @@ public class ContactController {
 
 		return contact.getPhoto();
 	}
+
+
 }
