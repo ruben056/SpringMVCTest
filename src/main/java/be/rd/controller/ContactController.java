@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import javax.validation.Valid;
 
+import be.rd.beans.Contact_;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -257,5 +258,16 @@ public class ContactController {
 		return contact.getPhoto();
 	}
 
+    @RequestMapping(value = "/metainfo")
+    @ResponseBody
+    public String getMetaInfo()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append("persistence type: " + Contact_.birthDate.getPersistentAttributeType());
+        sb.append("attributetype: " + Contact_.birthDate.getType());
+        sb.append("tostring" + Contact_.birthDate.toString());
+
+        return sb.toString();
+    }
 
 }

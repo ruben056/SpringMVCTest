@@ -1,2 +1,4 @@
 # matches 'target' in any sub folder
 target/
+.idea/
+*.iml

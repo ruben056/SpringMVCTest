@@ -24,7 +24,13 @@
 	<mvc:resources location="/, classpath:META-INF/web-resources/"
 		mapping="/resources/**" />
 		
-	<mvc:annotation-driven validator="validator"/>
+	<mvc:annotation-driven validator="validator">
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"/>
+        </mvc:message-converters>
+
+    </mvc:annotation-driven>
+
 	<mvc:default-servlet-handler />
 
 	<bean id="validator"
