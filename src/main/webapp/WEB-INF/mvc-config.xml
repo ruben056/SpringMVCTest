@@ -38,7 +38,8 @@
 		p:validationMessageSource-ref="messageSource"/>
 	
 	<mvc:interceptors>
-		<bean class="org.springframework.web.servlet.theme.ThemeChangeInterceptor" />
+		<bean class="org.springframework.web.servlet.theme.ThemeChangeInterceptor"
+            p:paramName="theme"/>
 		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"
 			p:paramName="lang" />
 	</mvc:interceptors>
@@ -48,7 +49,7 @@
 		class="org.springframework.ui.context.support.ResourceBundleThemeSource"
 		id="themeSource" />
 	<bean class="org.springframework.web.servlet.theme.CookieThemeResolver"
-		id="themeResolver" p:cookieName="theme" p:defaultThemeName="standard" />
+		id="themeResolver" p:cookieName="theme" p:defaultThemeName="dev" />
 
 	<!-- I18N -->
 	<!-- This will make sure you don't have to pass the locale with every request -->

@@ -12,6 +12,11 @@
 	</head> 
 	<body>
 		<c:url value="/contacts" var="messageUrl" />
-		<a href="${messageUrl}">Contacts</a>
+
+        <ul>
+            <li><a href="${messageUrl}">Contacts</a></li>
+            <li><a href="angular/basic.html">Angularjs: Basic</a></li>
+            <li><a href="angular/todo.html">Angularjs: Todo</a></li>
+        </ul>>
 	</body>
 </html>
